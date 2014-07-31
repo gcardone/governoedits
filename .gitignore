@@ -12,3 +12,5 @@ local.properties
 .settings/
 .loadpath
 build/
+src/main/resources/tokens.properties
+
