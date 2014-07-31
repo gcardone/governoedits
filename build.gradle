@@ -1,0 +1,29 @@
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'java'
+
+description='Governo Edits'
+group='it.gcardone'
+version='0.1'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies() {
+    compile 'ch.qos.logback:logback-classic:1.1.2'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.guava:guava:17.0'
+    compile 'org.pircbotx:pircbotx:2.0.1'
+
+    testCompile 'junit:junit:4.11'
+}
+
+jar {
+    dependsOn configurations.runtime
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest.attributes("Main-Class" : "it.gcardone.governoedits.Main")
+}
