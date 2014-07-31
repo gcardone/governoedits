@@ -1,0 +1,7 @@
+#Range 1 and 2 start from the same address
+RANGE 1:151.8.230.0-151.8.230.255
+RANGE 2:151.8.230.0-151.8.231.255
+# Range 3 and 4 are intersecting but do not start
+# from the same address
+RANGE 3:10.0.0.1-10.0.0.15
+RANGE 4:10.0.0.2-10.0.0.255
