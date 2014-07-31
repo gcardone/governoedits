@@ -31,8 +31,7 @@ public final class Properties {
      */
     public static String getProperty(String key, String fallbackResource)
             throws RequiredPropertyNotFoundException {
-        Optional<String> tokenOpt = Optional.ofNullable(System.getProperties().getProperty(
-                "bitly.token"));
+        Optional<String> tokenOpt = Optional.ofNullable(System.getProperties().getProperty(key));
 
         return tokenOpt.orElse(readFromResource(key, fallbackResource).orElseThrow(
                 () -> new RequiredPropertyNotFoundException(String.format(NOT_FOUND_MSG, key,
