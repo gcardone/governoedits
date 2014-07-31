@@ -1,4 +1,4 @@
-package it.governoedits;
+package it.governoedits.util;
 
 import static it.governoedits.util.IP4Utils.*;
 import static org.junit.Assert.*;
