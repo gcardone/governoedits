@@ -19,6 +19,7 @@ dependencies() {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.google.guava:guava:17.0'
     compile 'org.pircbotx:pircbotx:2.0.1'
+    compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'net.swisstech.bitly:bitly-api-client:0.7.2'
 
     testCompile 'junit:junit:4.11'
