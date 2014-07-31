@@ -1,25 +1,20 @@
 package it.governoedits;
 
-import java.io.UnsupportedEncodingException;
+import it.governoedits.util.Properties;
+
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
 
 import net.swisstech.bitly.BitlyClient;
 import net.swisstech.bitly.model.Response;
 import net.swisstech.bitly.model.v3.ShortenResponse;
-import it.governoedits.util.Properties;
+
+import org.apache.http.HttpStatus;
+
+import com.google.common.base.Preconditions;
 
 public class BitlyShortener {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(BitlyShortener.class);
     private final static String PROPERTY_NAME = "bitly.token";
     private final static String TOKEN_RESOURCE = "/tokens.properties";
     private final BitlyClient client;
@@ -37,14 +32,16 @@ public class BitlyShortener {
     public String shorten(String longUrl) throws BitlyException {
         Preconditions.checkNotNull(longUrl);
         Preconditions.checkArgument(BitlyShortener.validUrl(longUrl));
-        String urlencoded = "";
-        try {
-            urlencoded = URLEncoder.encode(longUrl, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-           LOGGER.error("UTF-8 encoding not supported in URL encoding?", e);
-           throw new RuntimeException(e);
-        }
-        
+
+        // URL appears to be encoded by the BitlyCLient library
+//        String urlencoded = "";
+//        try {
+//            urlencoded = URLEncoder.encode(longUrl, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//           LOGGER.error("UTF-8 encoding not supported in URL encoding?", e);
+//           throw new RuntimeException(e);
+//        }
+//        
         
         Response<ShortenResponse> resp = client.shorten().setLongUrl(longUrl).call();
 
