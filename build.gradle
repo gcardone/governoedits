@@ -11,7 +11,7 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    ivy { url "http://stackmagic.github.com/maven-repo/maven2" }
+    maven { url 'http://stackmagic.github.com/maven-repo/maven2' }
 }
 
 dependencies() {
