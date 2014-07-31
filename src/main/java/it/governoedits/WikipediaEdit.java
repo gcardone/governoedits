@@ -1,4 +1,4 @@
-package it.governoedits
+package it.governoedits;
 
 public class WikipediaEdit {
 

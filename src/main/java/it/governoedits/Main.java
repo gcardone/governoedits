@@ -1,4 +1,4 @@
-package it.governoedits
+package it.governoedits;
 
 import java.io.IOException;
 import java.util.Scanner;
