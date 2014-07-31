@@ -1,4 +1,4 @@
-package it.gcardone.governoedits;
+package it.governoedits
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package it.gcardone.governoedits;
+package it.governoedits
 
 import com.google.common.base.Preconditions;
 

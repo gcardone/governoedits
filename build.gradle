@@ -3,11 +3,11 @@ apply plugin: 'eclipse'
 apply plugin: 'java'
 
 description='Governo Edits'
-group='it.gcardone'
+group='it.governoedits'
 version='0.1'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
