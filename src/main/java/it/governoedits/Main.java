@@ -19,16 +19,16 @@ public class Main {
         try {
             BackgroundListenerManager listenerManager = new BackgroundListenerManager();
             IRCListener listener = new IRCListener();
-//            listenerManager.addListener(listener, true);
-//
-//            @SuppressWarnings("unchecked")
-//            Configuration<PircBotX> config = new Configuration.Builder<PircBotX>()
-//                    .setName("GovernoEdits").setAutoNickChange(true)
-//                    .setServer("irc.wikimedia.org", 6667).setAutoReconnect(true)
-//                    .addAutoJoinChannel("#it.wikipedia").setListenerManager(listenerManager)
-//                    .buildConfiguration();
-//
-//            PircBotX bot = new PircBotX(config);
+            listenerManager.addListener(listener, true);
+
+            @SuppressWarnings("unchecked")
+            Configuration<PircBotX> config = new Configuration.Builder<PircBotX>()
+                    .setName("GovernoEdits").setAutoNickChange(true)
+                    .setServer("irc.wikimedia.org", 6667).setAutoReconnect(true)
+                    .addAutoJoinChannel("#it.wikipedia").setListenerManager(listenerManager)
+                    .buildConfiguration();
+
+            PircBotX bot = new PircBotX(config);
 //            bot.startBot();
         } catch (IOException e) {
             logger.error("Critical error", e);
