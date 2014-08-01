@@ -9,10 +9,10 @@
 	</appender>
 
 	<root>
-		<level value="INFO" />
+		<level value="WARN" />
 		<appender-ref ref="STDOUT" />
 	</root>
 
-	<logger name="it.gcardone.governoedits" level="DEBUG" />
+	<logger name="it.governoedits" level="DEBUG" />
 
 </configuration>

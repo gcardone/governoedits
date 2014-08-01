@@ -50,21 +50,39 @@ public class IRCListener implements Listener<PircBotX> {
 
   private final JsonObject wikis;
   private final NavigableMap<Long, IPRange> ipranges;
+  private final List<HandleWikiEdit> handlers;
 
-  public IRCListener() throws IOException {
-	this(IRCListener.WIKIS_DEFAULT, IRCListener.RANGES_DEFAULT);
+  // if false does not use ranges from the ranges file to filter edits
+  private final boolean useRanges;
+
+  public IRCListener(List<HandleWikiEdit> handlers) throws IOException {
+	this(IRCListener.WIKIS_DEFAULT, IRCListener.RANGES_DEFAULT, handlers, true);
   }
 
-  public IRCListener(String wikisResource, String rangesResource)
+  public IRCListener(List<HandleWikiEdit> handlers, boolean useRanges)
 	  throws IOException {
+	this(IRCListener.WIKIS_DEFAULT, IRCListener.RANGES_DEFAULT, handlers,
+	    useRanges);
+  }
+
+  public IRCListener(String wikisResource, String rangesResource,
+	  List<HandleWikiEdit> handlers) throws IOException {
+	this(wikisResource, rangesResource, handlers, true);
+  }
+
+  public IRCListener(String wikisResource, String rangesResource,
+	  List<HandleWikiEdit> handlers, boolean useRanges) throws IOException {
 	Preconditions.checkNotNull(wikisResource);
 	Preconditions.checkNotNull(rangesResource);
+	Preconditions.checkNotNull(handlers);
+
+	this.handlers = ImmutableList.copyOf(handlers);
+	this.useRanges = useRanges;
 
 	try (InputStream is = IRCListener.class.getResourceAsStream(wikisResource);
 	    JsonReader jr = new JsonReader(new InputStreamReader(is))) {
 	  wikis = new JsonParser().parse(jr).getAsJsonObject();
 	}
-
 	ipranges = new TreeMap<Long, IPRange>();
 	try (InputStream is = IRCListener.class.getResourceAsStream(rangesResource);
 	    BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
@@ -100,6 +118,9 @@ public class IRCListener implements Listener<PircBotX> {
 		  String channel = messageEvent.getChannel().getName();
 		  String message = messageEvent.getMessage();
 		  WikipediaEdit we = parseEdit(channel, message);
+		  this.getRangeNameIfMatch(we).ifPresent(
+			  rangeName -> handlers.forEach(h -> h.handleEdit(rangeName, we)));
+
 		} catch (IllegalEditException e) {
 		  LOGGER.warn("Illegal message format {}.", messageEvent.getMessage());
 		}
@@ -176,21 +197,25 @@ public class IRCListener implements Listener<PircBotX> {
 	  // set comment
 	  weBuilder.setComment(m.group(6));
 
-	  LOGGER.info("{}", weBuilder.build());
+	  LOGGER.trace("{}", weBuilder.build());
 	  return weBuilder.build();
 	} else {
 	  throw new IllegalEditException();
 	}
   }
 
-  public boolean toPublish(WikipediaEdit we) {
+  public Optional<String> getRangeNameIfMatch(WikipediaEdit we) {
 	if (!we.isAnonymous()) {
-	  return false;
+	  return Optional.empty();
 	}
 	final String user = we.getUser();
-	return Optional
-	    .ofNullable(ipranges.floorEntry(IP4Utils.toLong(user)).getValue())
-	    .map(r -> r.withinRange(user)).orElse(false);
+	if (!useRanges) {
+	  return Optional.of("ANY");
+	} else {
+	  return Optional
+		  .ofNullable(ipranges.floorEntry(IP4Utils.toLong(user)).getValue())
+		  .filter(r -> r.withinRange(user)).map(IPRange::getName);
+	}
   }
 
   private List<IPRange> mergeRanges(List<IPRange> ranges) {
@@ -218,7 +243,7 @@ public class IRCListener implements Listener<PircBotX> {
 
 	return mergedList;
   }
-  
+
   protected List<IPRange> getRanges() {
 	return ImmutableList.copyOf(ipranges.values());
   }

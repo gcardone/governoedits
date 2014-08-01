@@ -22,8 +22,6 @@ public class TwitterPublish implements HandleWikiEdit {
   private static final String USER_TOKEN_SECRET = "twitter.user.token.secret";
   private static final String TOKEN_RESOURCE = "/tokens.properties";
 
-  protected static final String MSG_FORMAT = "New edit on article %s (%s) "
-	  + "from %s [diff: %s]";
 
   private final Twitter twitter;
   // Twitter automatically shortens links by its won (t.co) lins
@@ -72,18 +70,6 @@ public class TwitterPublish implements HandleWikiEdit {
 	  LOGGER.error(errorMsg, ex);
 
 	}
-  }
-
-  private String buildMessage(String range, WikipediaEdit e){
-
-	//Twitter autmoatically uses its ownl link shortener (http://t.co)
-	// no need to use bitly any more
-//	String shortPageUrl = bitly.shorten(e.getPageUrl());
-//	String diffPageUrl = bitly.shorten(e.getUrl());
-
-	return String.format(TwitterPublish.MSG_FORMAT, e.getPage(), e.getPageUrl(), range,
-	    e.getUrl());
-
   }
 
   private void authenticate() {

@@ -1,7 +1,6 @@
 package it.governoedits;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
@@ -10,28 +9,38 @@ import org.pircbotx.hooks.managers.BackgroundListenerManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
+
 public class Main {
 
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+  // Use ranges data to filter edits (set it to false only for testing)
+  private static final boolean USING_RANGES = true;
 
-    public static void main(String[] args) {
-        logger.info("Starting up");
-        try {
-            BackgroundListenerManager listenerManager = new BackgroundListenerManager();
-            IRCListener listener = new IRCListener();
-            listenerManager.addListener(listener, true);
+  public static void main(String[] args) {
+	LOGGER.info("Starting up");
+	try {
+	  LOGGER.info("Starting Twitter service");
 
-            @SuppressWarnings("unchecked")
-            Configuration<PircBotX> config = new Configuration.Builder<PircBotX>()
-                    .setName("GovernoEdits").setAutoNickChange(true)
-                    .setServer("irc.wikimedia.org", 6667).setAutoReconnect(true)
-                    .addAutoJoinChannel("#it.wikipedia").setListenerManager(listenerManager)
-                    .buildConfiguration();
+	  SimpleLoggerHandler lg = new SimpleLoggerHandler();
+	  TwitterPublish tp = new TwitterPublish();
 
-            PircBotX bot = new PircBotX(config);
-//            bot.startBot();
-        } catch (IOException e) {
-            logger.error("Critical error", e);
-        }
-    }
+	  BackgroundListenerManager listenerManager = new BackgroundListenerManager();
+	  IRCListener listener = new IRCListener(ImmutableList.of(lg, tp),
+		  Main.USING_RANGES);
+	  listenerManager.addListener(listener, true);
+
+	  @SuppressWarnings("unchecked")
+	  Configuration<PircBotX> config = new Configuration.Builder<PircBotX>()
+		  .setName("GovernoEdits").setAutoNickChange(true)
+		  .setServer("irc.wikimedia.org", 6667).setAutoReconnect(true)
+		  .addAutoJoinChannel("#it.wikipedia")
+		  .setListenerManager(listenerManager).buildConfiguration();
+
+	  PircBotX bot = new PircBotX(config);
+	  bot.startBot();
+	} catch (IrcException | IOException e) {
+	  LOGGER.error("Critical error", e);
+	}
+  }
 }
