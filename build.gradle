@@ -1,6 +1,7 @@
 apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'java'
+apply plugin: 'application'
 
 description='Governo Edits'
 group='it.governoedits'
@@ -8,6 +9,8 @@ version='0.1'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+mainClassName = 'it.governoedits.Main'
 
 repositories {
     mavenCentral()
@@ -30,5 +33,6 @@ dependencies() {
 jar {
     dependsOn configurations.runtime
     from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
-    manifest.attributes("Main-Class" : "it.gcardone.governoedits.Main")
+    manifest.attributes("Main-Class" : "it.governoedits.Main")
 }
+
