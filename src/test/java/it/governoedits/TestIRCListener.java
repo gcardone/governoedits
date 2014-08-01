@@ -1,6 +1,7 @@
 package it.governoedits;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -10,6 +11,19 @@ import com.google.common.collect.ImmutableList;
 
 public class TestIRCListener {
 
+  @Test
+  public void testToPublish() throws Exception {
+	IRCListener lst = new IRCListener("/wikis.json", "/test-ip_ranges.txt");
+	String ipInRange = "151.8.231.2";
+	String ipOutOfRange = "151.8.232.2";
+	WikipediaEdit we = mock(WikipediaEdit.class);
+	when(we.isAnonymous()).thenReturn(true);
+	when(we.getUser()).thenReturn(ipInRange);
+	assertTrue(lst.toPublish(we));
+	when(we.getUser()).thenReturn(ipOutOfRange);
+	assertFalse(lst.toPublish(we));
+	
+  }
   @Test
   public void testIntersectingRanges() throws Exception {
 	IRCListener lst = new IRCListener("/wikis.json", "/test-ip_ranges.txt");
@@ -27,5 +41,6 @@ public class TestIRCListener {
 	IRCListener ircListener = new IRCListener();
 	WikipediaEdit result = ircListener.parseEdit("#it.wikipedia", msg);
 	assertNotNull(result);
+	assertFalse(result.isAnonymous());
   }
 }

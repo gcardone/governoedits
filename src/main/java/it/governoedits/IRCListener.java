@@ -79,7 +79,7 @@ public class IRCListener implements Listener<PircBotX> {
 	  ranges.forEach(ipr -> ipranges.putIfAbsent(ipr.getStartLong(), ipr));
 
 	  // log duplicates (actually this test should never print any warning
-	  // now thanks to the precondition checkAllDisjoint)
+	  // now because ranges are merged)
 	  ranges
 		  .stream()
 		  .collect(Collectors.groupingBy(IPRange::getStartLong))
