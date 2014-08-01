@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.anyString;
 
 import org.junit.Test;
 
@@ -22,6 +23,7 @@ public class TestTwitterPublish {
 		  BITLY_PATTERN);
   
   private Twitter tw;
+  private BitlyShortener btly;
   private TwitterPublish underTest;
   
   
@@ -30,7 +32,7 @@ public class TestTwitterPublish {
   // test twitter account
   public void testHandlEditLive() throws Exception {
 	setUpRealClients();
-	underTest = new TwitterPublish(tw);
+	underTest = new TwitterPublish(tw, btly);
 	
 	WikipediaEdit edit = createEdit();
 
@@ -54,14 +56,14 @@ public class TestTwitterPublish {
   @Test
   public void testHandleEditMocks() throws Exception {
 	setUpMockClients();
-	underTest = new TwitterPublish(tw );
+	underTest = new TwitterPublish(tw,btly);
 
 	WikipediaEdit edit = createEdit();
 	
 	underTest.handleEdit("ME", edit);
 	
 	String expect = String.format(TwitterPublish.MSG_FORMAT, 
-		edit.getPage(), edit.getPageUrl(), "ME", edit.getUrl());
+		edit.getPage(), "<SHORTURL>", "ME", "<SHORTURL>");
 	verify(tw).updateStatus(expect);
 	
   }
@@ -82,10 +84,14 @@ public class TestTwitterPublish {
 	when(twAuth.isEnabled()).thenReturn(true);
 	when(tw.getAuthorization()).thenReturn(twAuth);
 	
+	btly = mock(BitlyShortener.class);
+	when(btly.shorten(anyString())).thenReturn("<SHORTURL>");
+	
   }
 
   private void setUpRealClients() {
 	tw = TwitterFactory.getSingleton();
+	btly = new BitlyShortener();
 	
   }
 }

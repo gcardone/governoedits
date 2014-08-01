@@ -9,7 +9,8 @@ public final class SimpleLoggerHandler implements HandleWikiEdit {
 
   @Override
   public void handleEdit(String fromRange, WikipediaEdit wikiEdit) {
-	String msg = buildMessage(fromRange, wikiEdit);
+	String msg = buildMessage(fromRange, wikiEdit.getPage(), wikiEdit.getPageUrl(),
+		wikiEdit.getUrl());
 	LOGGER.info(msg);
   }
 

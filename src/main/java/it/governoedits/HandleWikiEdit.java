@@ -6,9 +6,10 @@ public interface HandleWikiEdit {
 	  + "from %s [diff: %s]";
 
   void handleEdit(String fromRange, WikipediaEdit wikiEdit);
-
-  default String buildMessage(String range, WikipediaEdit e) {
-	return String.format(TwitterPublish.MSG_FORMAT, e.getPage(),
-	    e.getPageUrl(), range, e.getUrl());
+  
+  default public String buildMessage(String range, String page, 
+	  String url, String diffUrl) {
+	return String.format(TwitterPublish.MSG_FORMAT, page,
+	    url, range, diffUrl);
   }
 }

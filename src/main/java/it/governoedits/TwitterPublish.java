@@ -22,21 +22,18 @@ public class TwitterPublish implements HandleWikiEdit {
   private static final String USER_TOKEN_SECRET = "twitter.user.token.secret";
   private static final String TOKEN_RESOURCE = "/tokens.properties";
 
-
   private final Twitter twitter;
-  // Twitter automatically shortens links by its won (t.co) lins
-  // we do not need BITLY
-//  private final BitlyShortener bitly;
+  private final BitlyShortener bitly;
 
   public TwitterPublish() {
-	this(TwitterFactory.getSingleton());//, new BitlyShortener());
+	this(TwitterFactory.getSingleton(), new BitlyShortener());
   }
 
-  protected TwitterPublish(Twitter twitter) { //, BitlyShortener bitly) {
+  protected TwitterPublish(Twitter twitter, BitlyShortener bitly) {
 	Preconditions.checkNotNull(twitter);
-//	Preconditions.checkNotNull(bitly);
+	Preconditions.checkNotNull(bitly);
 	this.twitter = twitter;
-//	this.bitly = bitly;
+	this.bitly = bitly;
 	authenticate();
 	if (!this.twitter.getAuthorization().isEnabled()) {
 	  LOGGER
@@ -62,13 +59,20 @@ public class TwitterPublish implements HandleWikiEdit {
 	}
 
 	try {
-	  String tweet = buildMessage(fromRange, wikiEdit);
+	  String shortPageUrl = bitly.shorten(wikiEdit.getPageUrl());
+	  String diffPageUrl = bitly.shorten(wikiEdit.getUrl());
+	  String tweet = buildMessage(fromRange, wikiEdit.getPage(), shortPageUrl,
+		  diffPageUrl);
 	  twitter.updateStatus(tweet);
-	}  catch (TwitterException ex) {
+	} catch (TwitterException ex) {
 	  String errorMsg = String.format(
 		  "Skipping edit %s: twitter error while publishig.", wikiEdit);
 	  LOGGER.error(errorMsg, ex);
-
+	} catch (BitlyException ex) {
+	  String errorMsg = String.format(
+		  "Skipping edit %s: bitly error while publishig.", wikiEdit);
+	  LOGGER.error(errorMsg, ex);
+	  
 	}
   }
 
@@ -77,7 +81,7 @@ public class TwitterPublish implements HandleWikiEdit {
 	AccessToken userTokens = TwitterPublish.readUserTokens();
 	twitter.setOAuthConsumer(consumerTokens[0], consumerTokens[1]);
 	twitter.setOAuthAccessToken(userTokens);
-	
+
   }
 
   private static AccessToken readUserTokens() {
@@ -96,6 +100,5 @@ public class TwitterPublish implements HandleWikiEdit {
 	return new String[] { token, security };
 
   }
-  
 
 }
