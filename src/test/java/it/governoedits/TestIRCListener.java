@@ -21,7 +21,7 @@ public class TestIRCListener {
 	WikipediaEdit we = mock(WikipediaEdit.class);
 	when(we.isAnonymous()).thenReturn(true);
 	when(we.getUser()).thenReturn(ipInRange);
-	assertEquals(Optional.of(ipInRange), lst.getRangeNameIfMatch(we));
+	assertEquals(Optional.of("RANGE 1"), lst.getRangeNameIfMatch(we));
 	when(we.getUser()).thenReturn(ipOutOfRange);
 	assertEquals(Optional.empty(), lst.getRangeNameIfMatch(we));
 	
@@ -44,6 +44,7 @@ public class TestIRCListener {
 	IRCListener ircListener = new IRCListener(ImmutableList.of());
 	WikipediaEdit result = ircListener.parseEdit("#it.wikipedia", msg);
 	assertNotNull(result);
-	assertFalse(result.isAnonymous());
+//	assertFalse(result.isAnonymous());
+	assertTrue(result.isAnonymous());
   }
 }

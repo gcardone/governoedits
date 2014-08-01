@@ -197,7 +197,7 @@ public class IRCListener implements Listener<PircBotX> {
 	  // set comment
 	  weBuilder.setComment(m.group(6));
 
-	  LOGGER.trace("{}", weBuilder.build());
+	  LOGGER.debug("{}", weBuilder.build());
 	  return weBuilder.build();
 	} else {
 	  throw new IllegalEditException();
