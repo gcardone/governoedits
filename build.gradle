@@ -1,7 +1,6 @@
 apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'java'
-apply plugin: 'application'
 
 description='Governo Edits'
 group='it.governoedits'

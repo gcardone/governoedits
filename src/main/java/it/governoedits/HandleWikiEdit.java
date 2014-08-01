@@ -3,7 +3,7 @@ package it.governoedits;
 public interface HandleWikiEdit {
 
   static final String MSG_FORMAT = "New edit on article %s (%s) "
-	  + "from %s [diff: %s]";
+	  + "from %s [diff: %s]. #governoedits #wikipedia";
 
   void handleEdit(String fromRange, WikipediaEdit wikiEdit);
   
