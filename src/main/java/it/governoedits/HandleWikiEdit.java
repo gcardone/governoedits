@@ -2,5 +2,5 @@ package it.governoedits;
 
 public interface HandleWikiEdit {
 
-    public void handleEdit(WikipediaEdit wikiEdit);
+    public void handleEdit(String fromRange, WikipediaEdit wikiEdit);
 }
