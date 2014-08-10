@@ -24,6 +24,8 @@ dependencies() {
     compile 'org.apache.httpcomponents:httpclient:4.3.4'
     compile 'org.pircbotx:pircbotx:2.0.1'
     compile 'org.twitter4j:twitter4j-core:4.0.2'
+    // needed by logback groovy configuration
+    compile 'org.codehaus.groovy:groovy:2.3.6'
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-all:1.9.5'

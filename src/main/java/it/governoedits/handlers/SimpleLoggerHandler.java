@@ -1,4 +1,7 @@
-package it.governoedits;
+package it.governoedits.handlers;
+
+import it.governoedits.HandleWikiEdit;
+import it.governoedits.WikipediaEdit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

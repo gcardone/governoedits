@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.anyString;
+import it.governoedits.handlers.TwitterPublish;
 
 import org.junit.Test;
 

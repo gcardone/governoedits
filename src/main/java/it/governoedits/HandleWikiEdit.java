@@ -1,5 +1,7 @@
 package it.governoedits;
 
+import it.governoedits.handlers.TwitterPublish;
+
 public interface HandleWikiEdit {
 
   static final String MSG_FORMAT = "New edit on article %s (%s) "

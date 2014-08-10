@@ -1,5 +1,9 @@
-package it.governoedits;
+package it.governoedits.handlers;
 
+import it.governoedits.BitlyException;
+import it.governoedits.BitlyShortener;
+import it.governoedits.HandleWikiEdit;
+import it.governoedits.WikipediaEdit;
 import it.governoedits.util.Properties;
 
 import org.slf4j.Logger;

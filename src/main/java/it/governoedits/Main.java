@@ -1,5 +1,8 @@
 package it.governoedits;
 
+import it.governoedits.handlers.SimpleLoggerHandler;
+import it.governoedits.handlers.TwitterPublish;
+
 import java.io.IOException;
 
 import org.pircbotx.Configuration;
